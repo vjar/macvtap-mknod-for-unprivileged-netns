@@ -1,3 +1,4 @@
+/macvtap-mknod-for-unprivileged-netns-*.tar.gz
 /src/*.o
 /macvtap-mknod-for-unprivileged-netns
 
