@@ -23,9 +23,9 @@ This tool executes `/bin/macvtap-mknod-targetpid-discovery [interface name]` to
 discover which network namespace to access. From under `/proc/PID/ns` the files
 `user` and `net` are used to enter the respective namespaces.
 
-`make install` creates this path as a symbolic link pointing to a script that
-implements the discovery method for rootless Podman. This can be replaced to
-support differently initialised network namespaces.
+`make install` creates this path as a symbolic link, which points to a script
+for rootless Podman. This can be replaced to support differently initialised
+network namespaces.
 
 The ifname argument is not used, but it may be used in custom implementations.
 
@@ -47,7 +47,7 @@ macvtaps created by other users.
 ## Installation
 
 Either download and extract a release, or prepare the cloned repo with
-`autoreconf --install`, and follow the release installation.
+`autoreconf --install`, and follow the release installation guide.
 
 From releases
 ```
