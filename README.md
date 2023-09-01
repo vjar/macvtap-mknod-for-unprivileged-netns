@@ -8,7 +8,7 @@ for macvtap interfaces in Podman's rootless network namespaces.
 Enter the rootless network namespace and create a macvtap interface.
 ```
 $ podman unshare --rootless-netns
-# ip link add link eth0 name mytap address "a1:b2:c3:a1:b2:c3" type macvtap mode bridge
+# ip link add link eth0 name mytap address "a0:b1:c2:a1:b2:c3" type macvtap mode bridge
 ```
 
 Create the chrdev.
