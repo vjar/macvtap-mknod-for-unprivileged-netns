@@ -114,9 +114,7 @@ int32_t discover_target_pid(int32_t *pPid, char *argv[], int32_t *infd, int32_t 
 
 int32_t format_ns_path(format_ns_path_t *fmt, char* ns) {
 	int32_t nbytes = snprintf(fmt->path, sizeof(fmt->path), "/proc/%d/ns/%s", fmt->target_pid, ns);
-	if ((uint64_t)nbytes > sizeof(fmt->path)) {
-		return 1;
-	}
+	assert(nbytes != -1 && (uint64_t)nbytes < sizeof(fmt->path));
 	return 0;
 }
 
@@ -165,9 +163,7 @@ int32_t mount_correct_sysfs(setnsinfo_t *setns_i) {
 int32_t macvtap_uevent_fd(char *ifname, int32_t *pFd) {
 	char path[256];
 	int32_t nbytes = snprintf(path, sizeof(path), "/sys/devices/virtual/net/%s/macvtap", ifname);
-	if ((uint64_t)nbytes > sizeof(path)) {
-		return 1;
-	}
+	assert(nbytes != -1 && (uint64_t)nbytes < sizeof(path));
 
 	DIR *dir = opendir(path);
 	if (dir == NULL) {
@@ -181,9 +177,7 @@ int32_t macvtap_uevent_fd(char *ifname, int32_t *pFd) {
 	struct dirent *tapdir = readdir(dir);
 
 	nbytes = snprintf(path, sizeof(path), "/sys/devices/virtual/net/%s/macvtap/%s/uevent", ifname, tapdir->d_name);
-	if ((uint64_t)nbytes > sizeof(path)) {
-		return 1;
-	}
+	assert(nbytes != -1 && (uint64_t)nbytes < sizeof(path));
 	closedir(dir);
 
 	*pFd = open(path, O_RDONLY | O_CLOEXEC);
@@ -272,17 +266,8 @@ int32_t open_target_pid_ns_fds(setnsinfo_t *setns_i, char *argv[]) {
 int32_t do_mknod(dev_t *pDev, char *ifname) {
 	char path[256];
 	int64_t nbytes = snprintf(path, sizeof(path), "tap-%s", ifname);
-	if (nbytes == -1) {
-		fprintf(stderr, "snprintf failed\n");
-		return 1;
-	}
+	assert(nbytes != -1 && (uint64_t)nbytes < sizeof(path));
 
-	if ((uint64_t)nbytes > sizeof(path)) {
-		fprintf(stderr, "mknod destination path too long\n");
-		return 1;
-	}
-
-	path[nbytes] = '\0';
 	if (mknod(path, S_IFCHR, *pDev)) {
 		perror("mknod");
 		return 1;
