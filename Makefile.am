@@ -1,6 +1,7 @@
 bin_PROGRAMS = macvtap-mknod-for-unprivileged-netns
 macvtap_mknod_for_unprivileged_netns_SOURCES = src/main.c
 dist_bin_SCRIPTS = macvtap-mknod-targetpid-discovery-podman
+dist_noinst_FILES = README.md
 
 install-exec-hook:
 	ln -s macvtap-mknod-targetpid-discovery-podman $(DESTDIR)$(bindir)/macvtap-mknod-targetpid-discovery
