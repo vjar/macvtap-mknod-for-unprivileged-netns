@@ -296,8 +296,8 @@ bool dev_valid_name(const char *name) {
 }
 
 int32_t main(int32_t argc, char *argv[]) {
-	if (argc != 2) {
-		fprintf(stderr, "usage: %s [interface name]\n", argv[0]);
+	if (argc < 2) {
+		fprintf(stderr, "usage: %s [interface name] [additional arguments to pass to targetpid discovery]\n", argv[0]);
 		return 1;
 	}
 
