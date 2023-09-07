@@ -276,8 +276,8 @@ int32_t do_mknod(dev_t *pDev, char *ifname) {
 }
 
 int32_t main(int32_t argc, char *argv[]) {
-	if (argc != 2) {
-		fprintf(stderr, "usage: %s [interface name]\n", argv[0]);
+	if (argc < 2) {
+		fprintf(stderr, "usage: %s [interface name] [additional arguments to pass to targetpid discovery]\n", argv[0]);
 		return 1;
 	}
 
