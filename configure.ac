@@ -1,4 +1,4 @@
-AC_INIT([macvtap-mknod-for-unprivileged-netns], [0.1.1])
+AC_INIT([macvtap-mknod-for-unprivileged-netns], [0.1.2])
 AM_INIT_AUTOMAKE([subdir-objects foreign])
 
 AC_DEFINE(PID_DISCOVERY_EXEC, "/bin/macvtap-mknod-targetpid-discovery")
