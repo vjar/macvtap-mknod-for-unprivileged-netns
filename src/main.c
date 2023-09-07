@@ -1,5 +1,6 @@
 #define _GNU_SOURCE
 #include <stdint.h>
+#include <stdbool.h>
 #include <sys/stat.h>
 #include <sys/sysmacros.h>
 #include <stdio.h>
@@ -13,6 +14,8 @@
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <net/if.h>
+#include <ctype.h>
 
 typedef struct format_ns_path {
 	char path[256];
@@ -275,9 +278,32 @@ int32_t do_mknod(dev_t *pDev, char *ifname) {
 	return 0;
 }
 
+// https://github.com/torvalds/linux/blob/3a1e2f4/net/core/dev.c#L1028
+bool dev_valid_name(const char *name) {
+	if (*name == '\0')
+		return false;
+	if (strnlen(name, IFNAMSIZ) == IFNAMSIZ)
+		return false;
+	if (!strcmp(name, ".") || !strcmp(name, ".."))
+		return false;
+
+	while (*name) {
+		if (*name == '/' || *name == ':' || isspace(*name))
+			return false;
+		name++;
+	}
+	return true;
+}
+
 int32_t main(int32_t argc, char *argv[]) {
 	if (argc != 2) {
 		fprintf(stderr, "usage: %s [interface name]\n", argv[0]);
+		return 1;
+	}
+
+	char *ifname = argv[1];
+	if (dev_valid_name(ifname) == false) {
+		fprintf(stderr, "invalid device name\n");
 		return 1;
 	}
 
@@ -285,9 +311,9 @@ int32_t main(int32_t argc, char *argv[]) {
 	if (open_target_pid_ns_fds(setns_i, argv)) { return 1; }
 
 	dev_t *dev = allocate_dev_shm();
-	if (read_majmin_in_netns(argv[1], dev, setns_i)) { return 1; }
+	if (read_majmin_in_netns(ifname, dev, setns_i)) { return 1; }
 
-	if (do_mknod(dev, argv[1])) { return 1; }
+	if (do_mknod(dev, ifname)) { return 1; }
 	munmap(dev, sizeof(*dev));
 	return 0;
 }
