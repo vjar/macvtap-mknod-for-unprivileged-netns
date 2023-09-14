@@ -4,5 +4,5 @@ dist_libexec_SCRIPTS = macvtap-mknod-targetpid-discovery-podman
 dist_noinst_FILES = README.md
 
 install-exec-hook:
-	ln -s macvtap-mknod-targetpid-discovery-podman $(DESTDIR)$(bindir)/macvtap-mknod-targetpid-discovery
+	ln -s macvtap-mknod-targetpid-discovery-podman $(DESTDIR)$(libexecdir)/macvtap-mknod-targetpid-discovery
 	setcap CAP_MKNOD=ep $(DESTDIR)$(bindir)/macvtap-mknod-for-unprivileged-netns
