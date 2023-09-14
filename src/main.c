@@ -205,7 +205,7 @@ int32_t parse_uevent_file(dev_t *pDev, int32_t fd) {
 	newline = strtok(buf, "\n");
 	char *major_str, *minor_str;
 	for (;;) {
-		int64_t keylen = strstr(newline, "=") - newline;
+		int64_t keylen = strchr(newline, '=') - newline;
 		newline[keylen] = '\0';
 		char *key = newline;
 		char *value_str = &newline[keylen+1];

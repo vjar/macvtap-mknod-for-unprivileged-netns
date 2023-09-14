@@ -19,13 +19,13 @@ $ macvtap-mknod-for-unprivileged-netns mytap
 
 ## Configuration
 
-This tool executes `/bin/macvtap-mknod-targetpid-discovery [...]` to discover
-which network namespace to access. From under `/proc/PID/ns` the files `user`
-and `net` are used to enter the respective namespaces.
+This tool executes `/usr/libexec/macvtap-mknod-targetpid-discovery [...]` to
+discover which network namespace to access. From under `/proc/PID/ns` the files
+`user` and `net` are used to enter the respective namespaces.
 
 `make install` creates this path as a symbolic link, which points to a script
 for rootless Podman. This can be replaced to support differently initialised
-network namespaces.
+network namespaces. The link is not removed by `make uninstall`.
 
 None of the arguments are used for target PID discovery, but all arguments are
 passed and may be used in custom implementations.
