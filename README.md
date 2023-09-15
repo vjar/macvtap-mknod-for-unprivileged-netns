@@ -25,7 +25,8 @@ discover which network namespace to access. From under `/proc/PID/ns` the files
 
 `make install` creates this path as a symbolic link, which points to a script
 for rootless Podman. This can be replaced to support differently initialised
-network namespaces. The link is not removed by `make uninstall`.
+network namespaces. The link is not removed by `make uninstall` and an existing
+link is not overwritten by `make install`.
 
 None of the arguments are used for target PID discovery, but all arguments are
 passed and may be used in custom implementations.
