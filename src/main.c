@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <net/if.h>
 #include <ctype.h>
+#include <sys/capability.h>
 
 typedef struct format_ns_path {
 	char path[256];
@@ -270,6 +271,22 @@ int32_t do_mknod(dev_t *pDev, char *ifname) {
 	char path[256];
 	int64_t nbytes = snprintf(path, sizeof(path), "tap-%s", ifname);
 	assert(nbytes != -1 && (uint64_t)nbytes < sizeof(path));
+
+	cap_t caps = cap_get_proc();
+	if (caps == NULL) {
+		perror("cap_get_proc");
+		return 1;
+	}
+
+	if (cap_set_flag(caps, CAP_EFFECTIVE, 1, (cap_value_t[]){ CAP_MKNOD }, CAP_SET) == -1) {
+		perror("cap_set_flag");
+		return 1;
+	}
+
+	if (cap_set_proc(caps) == -1) {
+		perror("cap_set_proc");
+		return 1;
+	}
 
 	if (mknod(path, S_IFCHR, *pDev)) {
 		perror("mknod");

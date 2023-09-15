@@ -46,6 +46,13 @@ removing the original interfaces afterwards may allow access to subsequent
 macvtaps created by other users.
 
 
+## Prerequisites
+
+* libcap-dev ([debian](https://packages.debian.org/search?keywords=libcap-dev))
+	or libcap-devel
+	([fedora](https://packages.fedoraproject.org/pkgs/libcap/libcap-devel/))
+
+
 ## Installation
 
 Either download and extract a release, or prepare the cloned repo with
